@@ -1,13 +1,21 @@
 package com.example.omz.colourmemory;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.text.method.TransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,6 +28,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -32,6 +43,8 @@ public class PlayActivity extends AppCompatActivity {
     GridLayoutManager glm;
     int points, prevPos;
     Card prevCard;
+    Realm realm;
+    AlertDialog scoreDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +77,26 @@ public class PlayActivity extends AppCompatActivity {
         highscoresButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Load Realm here
+                FragmentManager fm = getSupportFragmentManager();
+                HighscoresDialog dialog = HighscoresDialog.newInstance("High Scores");
+                dialog.show(fm, "dialog_highscores");
             }
         });
+
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
+        realm.close();
+        try {
+            if (scoreDialog != null && scoreDialog.isShowing()) {
+                scoreDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 
@@ -142,7 +167,63 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         if (gameOver) {
-            Log.e(TAG, "Game over");
+            showAddDialog();
         }
+    }
+
+    private void showAddDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Congratulations!");
+        builder.setMessage("Your score is " + points + ".");
+
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText userField = new EditText(this);
+        userField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        userField.setHint("Please enter your name");
+        userField.setLayoutParams(linearLayoutParams);
+        linearLayoutParams.setMargins(70, 0, 100, 0);
+        linearLayout.addView(userField);
+        userField.setFocusable(true);
+        userField.setSingleLine();
+        builder.setView(linearLayout);
+        builder.setCancelable(false);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.setNegativeButton(null, null);
+
+        scoreDialog = builder.create();
+        scoreDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button positiveButton = scoreDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        String input = userField.getText().toString().trim();
+                        if (input.length() == 0) {
+                            userField.setError("Please enter a valid name");
+                        } else {
+                            realm.beginTransaction();
+                            Highscore highscore = realm.createObject(Highscore.class);
+                            highscore.setScore(points);
+                            highscore.setName(input);
+                            realm.commitTransaction();
+
+                            Intent intent = new Intent(getApplicationContext(), HighscoresActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+            }
+        });
+        scoreDialog.show();
     }
 }

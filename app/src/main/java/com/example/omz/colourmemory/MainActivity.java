@@ -1,6 +1,7 @@
 package com.example.omz.colourmemory;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         highscoresButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Load Realm here
+                Intent intent = new Intent(getApplicationContext(), HighscoresActivity.class);
+                startActivity(intent);
             }
         });
     }

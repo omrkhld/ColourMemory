@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,7 +36,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
         return new ViewHolder(view);
     }
 
@@ -46,10 +44,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Card card = mCards.get(position);
         holder.cardFront.setImageResource(card.getImgRes());
-
-        if (init) {
-            holder.cardFront.setVisibility(View.GONE);
-        }
 
         int revealedCount = 0;
         for (Card c : mCards) {
@@ -66,7 +60,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             if (!card.getIsRevealed()) {
                 if (!init) {
                     holder.cardFront.setVisibility(View.VISIBLE);
-                    Log.e(TAG, "Flipping back");
                     animateFlip(holder.cardBack, holder.cardFront, holder.cardLayout, new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
@@ -84,7 +77,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
                         }
                     });
-                    Log.e(TAG, "3: " + holder.cardFront.getVisibility());
                 }
                 holder.cardLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -95,11 +87,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 });
                 if (!touchEnabledFlag)  touchEnabledFlag = true;
             } else if (card.getIsRevealed()) {
-                Log.e(TAG, "Flipping forward");
                 holder.cardBack.setVisibility(View.VISIBLE);
                 holder.cardFront.setVisibility(View.GONE);
                 animateFlip(holder.cardBack, holder.cardFront, holder.cardLayout, null);
-                Log.e(TAG, "2: " + holder.cardFront.getVisibility());
                 holder.cardLayout.setOnClickListener(null);
                 if (revealedCount > 1) {
                     touchEnabledFlag = false;
@@ -112,9 +102,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public static void animateFlip(ImageView back, ImageView front, FrameLayout cardView, Animation.AnimationListener animationListener) {
 
         FlipAnimation flipAnimation = new FlipAnimation(back, front);
-        Log.e(TAG, "1: " + front.getVisibility());
         if (front.getVisibility() == View.VISIBLE) {
-            Log.e(TAG, "Reversed");
             flipAnimation.reverse();
         }
         flipAnimation.setAnimationListener(animationListener);
