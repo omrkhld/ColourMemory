@@ -1,4 +1,4 @@
-package com.example.omz.colourmemory;
+package com.example.omz.colourmemory.models;
 
 /**
  * Created by Omz on 15/5/2017.

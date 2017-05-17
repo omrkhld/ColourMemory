@@ -1,4 +1,4 @@
-package com.example.omz.colourmemory;
+package com.example.omz.colourmemory.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,13 +10,17 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.text.method.TransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.omz.colourmemory.fragments.HighscoresDialog;
+import com.example.omz.colourmemory.models.Card;
+import com.example.omz.colourmemory.models.Highscore;
+import com.example.omz.colourmemory.R;
+import com.example.omz.colourmemory.adapters.CardAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,8 +33,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -173,7 +175,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private void showAddDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Congratulations!");
+        builder.setTitle(R.string.add_score_title_text);
         builder.setMessage("Your score is " + points + ".");
 
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
@@ -184,7 +186,7 @@ public class PlayActivity extends AppCompatActivity {
 
         final EditText userField = new EditText(this);
         userField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        userField.setHint("Please enter your name");
+        userField.setHint(R.string.enter_name_text);
         userField.setLayoutParams(linearLayoutParams);
         linearLayoutParams.setMargins(70, 0, 100, 0);
         linearLayout.addView(userField);
@@ -208,7 +210,7 @@ public class PlayActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         String input = userField.getText().toString().trim();
                         if (input.length() == 0) {
-                            userField.setError("Please enter a valid name");
+                            userField.setError(getString(R.string.error_enter_name_text));
                         } else {
                             realm.beginTransaction();
                             Highscore highscore = realm.createObject(Highscore.class);

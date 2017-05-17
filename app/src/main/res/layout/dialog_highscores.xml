@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:gravity="center"
-            android:text="RANK"
+            android:text="@string/rank_text"
             android:textSize="16sp"
             android:textColor="@android:color/black"/>
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
             android:gravity="center"
-            android:text="NAME"
+            android:text="@string/name_text"
             android:textSize="16sp"
             android:textColor="@android:color/black"/>
 
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:gravity="center"
-            android:text="SCORE"
+            android:text="@string/score_text"
             android:textSize="16sp"
             android:textColor="@android:color/black"/>
     </LinearLayout>

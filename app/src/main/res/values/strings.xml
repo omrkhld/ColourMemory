@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Colour Memory</string>
+    <string name="high_scores_text">High Scores</string>
+    <string name="rank_text">RANK</string>
+    <string name="name_text">NAME</string>
+    <string name="score_text">SCORE</string>
+    <string name="play_text">Play</string>
+    <string name="points_text">Points:</string>
+    <string name="zero_text">0</string>
+    <string name="enter_name_text">Please enter your name</string>
+    <string name="add_score_title_text">Congratulations!</string>
+    <string name="error_enter_name_text">Please enter a valid name</string>
 </resources>

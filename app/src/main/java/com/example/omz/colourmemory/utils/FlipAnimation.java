@@ -1,4 +1,4 @@
-package com.example.omz.colourmemory;
+package com.example.omz.colourmemory.utils;
 
 import android.graphics.Camera;
 import android.graphics.Matrix;

@@ -1,6 +1,4 @@
-package com.example.omz.colourmemory;
-
-import android.support.annotation.NonNull;
+package com.example.omz.colourmemory.models;
 
 import io.realm.RealmObject;
 

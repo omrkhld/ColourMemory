@@ -1,10 +1,13 @@
-package com.example.omz.colourmemory;
+package com.example.omz.colourmemory.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import com.example.omz.colourmemory.models.Highscore;
+import com.example.omz.colourmemory.R;
+import com.example.omz.colourmemory.adapters.HighscoresRealmAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

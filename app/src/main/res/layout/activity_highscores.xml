@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.omz.colourmemory.HighscoresActivity">
+    tools:context="com.example.omz.colourmemory.activities.HighscoresActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="High Scores"
+        android:text="@string/high_scores_text"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:gravity="center"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:gravity="center"
-            android:text="RANK"
+            android:text="@string/rank_text"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
             android:gravity="center"
-            android:text="NAME"
+            android:text="@string/name_text"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.1"
             android:gravity="center"
-            android:text="SCORE"
+            android:text="@string/score_text"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
     </LinearLayout>
