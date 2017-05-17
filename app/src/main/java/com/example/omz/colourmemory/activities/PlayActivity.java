@@ -43,6 +43,7 @@ public class PlayActivity extends AppCompatActivity {
 
     List<Card> cards;
     GridLayoutManager glm;
+    boolean inProgress;
     int points, prevPos;
     Card prevCard;
     Realm realm;
@@ -58,6 +59,7 @@ public class PlayActivity extends AppCompatActivity {
         points = 0;
         pointsText.setText(" " + String.valueOf(points));
         prevCard = new Card();
+        inProgress = false;
 
         cards = new ArrayList<>(Arrays.asList(
                 new Card(R.drawable.colour1), new Card(R.drawable.colour2),
@@ -90,21 +92,41 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (inProgress) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Are you sure?");
+            builder.setMessage("You're about to quit the game. If you do so, your progress will not be saved!");
+            builder.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    PlayActivity.super.onBackPressed();
+                }
+            });
+            builder.setNegativeButton("Don't Quit", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         realm.close();
-        try {
-            if (scoreDialog != null && scoreDialog.isShowing()) {
-                scoreDialog.dismiss();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (scoreDialog != null && scoreDialog.isShowing()) {
+            scoreDialog.dismiss();
         }
         super.onDestroy();
     }
 
     @Subscribe
     public void cardClicked(final CardAdapter.ClickEvent event) {
+        inProgress = true;
         final Card card = cards.get(event.position);
         card.setIsRevealed(true);
         recyclerView.getAdapter().notifyItemChanged(event.position);
