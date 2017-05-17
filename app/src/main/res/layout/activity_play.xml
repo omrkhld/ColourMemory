@@ -48,7 +48,6 @@
                 android:id="@+id/textPoints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/zero_text"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"

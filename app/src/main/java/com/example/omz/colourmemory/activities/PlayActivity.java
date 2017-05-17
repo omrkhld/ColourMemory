@@ -56,6 +56,7 @@ public class PlayActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
 
         points = 0;
+        pointsText.setText(" " + String.valueOf(points));
         prevCard = new Card();
 
         cards = new ArrayList<>(Arrays.asList(
@@ -127,7 +128,7 @@ public class PlayActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                pointsText.setText(String.valueOf(points));
+                pointsText.setText(" " + String.valueOf(points));
                 prevCard.setIsMatched(true);
                 card.setIsMatched(true);
                 cards.set(prevPos, prevCard);
@@ -147,7 +148,7 @@ public class PlayActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                pointsText.setText(String.valueOf(points));
+                pointsText.setText(" " + String.valueOf(points));
                 prevCard.setIsRevealed(false);
                 card.setIsRevealed(false);
                 cards.set(prevPos, prevCard);
